@@ -9,6 +9,19 @@ users:
       - sudo
     ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdkphCtrS2dASXtibzKyJyUtb72mmZACKu8kLlByuOx qishon"
 
+ufw_rules:
+  - port: "{{ ssh_port }}"
+    proto: tcp
+    comment: "SSH"
+
+  - port: "80"
+    proto: tcp
+    comment: "HTTP"
+
+  - port: "443"
+    proto: tcp
+    comment: "HTTPS"
+
 # workspace.yaml
 service:
   user: supabase
