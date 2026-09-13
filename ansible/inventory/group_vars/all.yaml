@@ -3,8 +3,8 @@
 ssh_port: 41571
 packages:
   - git
-  - sops
   - age
+sops_version: 3.13.3
 users:
   - name: qishon
     groups:
