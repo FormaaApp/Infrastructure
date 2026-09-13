@@ -16,3 +16,17 @@
     state: present
     manage_dir: true
   loop: "{{ users }}"
+
+- name: Configure passwordless sudo
+  ansible.builtin.copy:
+    content: |
+      # Managed by Ansible. Do not edit manually.
+      {{ item.name }} ALL=(ALL) NOPASSWD: ALL
+    dest: "/etc/sudoers.d/90-{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "/usr/sbin/visudo -cf %s"
+  loop: "{{ users }}"
+  when:
+    - "'sudo' in (item.groups | default([]))"

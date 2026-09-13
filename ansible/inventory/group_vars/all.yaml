@@ -1,5 +1,5 @@
 ---
-ssh_port: 2222
+ssh_port: 41571
 
 users:
   - name: qishon
