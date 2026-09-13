@@ -30,7 +30,7 @@ cd ansible
 ansible-playbook playbooks/bootstrap.yaml --diff --check --ask-pass
 ```
 
-2. Примените изменения
+2. Применить изменения
 
 ```sh
 ansible-playbook playbooks/bootstrap.yaml --diff --ask-pass
