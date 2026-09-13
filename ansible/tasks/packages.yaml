@@ -1,10 +1,17 @@
 ---
-- name: "Packages"
-  block:
-    - name: Update apt cache and upgrade all packages
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 604800 # 7 days
-        upgrade: dist
-        autoremove: true
-        autoclean: true
+- name: Update apt cache and upgrade all packages
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 604800 # 7 days
+    upgrade: dist
+    autoremove: true
+    autoclean: true
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: present
+
+- name: Install Docker
+  ansible.builtin.include_role:
+    name: geerlingguy.docker

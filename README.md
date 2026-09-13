@@ -8,6 +8,13 @@
 
 ### Предисловие
 
+Перед работой необходимо установить зависимости Ansible:
+
+```sh
+cd ansible
+ansible-galaxy install -r requirements.yaml
+```
+
 Если первоначальная настройка уже была выполнена, то вместо флага `--ask-pass` в командах ниже необходимо:
 
 1. Добавить ваш ключ в ssh-agent
@@ -26,7 +33,7 @@ ssh-add <pathToPrivateKey>
 1. Проверить работоспособность плейбука
 
 ```sh
-cd ansible
+# из папки ansible
 ansible-playbook playbooks/bootstrap.yaml --diff --check --ask-pass
 ```
 
