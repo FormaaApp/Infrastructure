@@ -42,3 +42,10 @@ ansible-playbook playbooks/bootstrap.yaml --diff --check --ask-pass
 ```sh
 ansible-playbook playbooks/bootstrap.yaml --diff --ask-pass
 ```
+
+### 2. Настройка рабочего окружения
+
+```sh
+export PERSONAL_ACCESS_TOKEN=<Classic GitHub PAT with 'admin:org' permissions>
+ansible-playbook playbooks/workspace.yaml --diff --ask-pass
+```
