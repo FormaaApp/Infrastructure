@@ -1,0 +1,30 @@
+---
+- name: Configure GitHub Actions Runner
+  hosts: servers
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Run preflight checks
+      ansible.builtin.import_tasks: ../tasks/preflight.yaml
+
+    - name: Check GitHub token
+      ansible.builtin.assert:
+        that:
+          - lookup('ansible.builtin.env', 'PERSONAL_ACCESS_TOKEN') | length > 0
+        fail_msg: "PERSONAL_ACCESS_TOKEN environment variable is not set."
+
+  tasks:
+    - name: Create service account
+      ansible.builtin.user:
+        name: "{{ service.user }}"
+        system: true
+        groups: "{{ service.groups | default([]) }}"
+        append: true
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: Install GitHub Actions Runner
+      ansible.builtin.include_role:
+        name: monolithprojects.github_actions_runner

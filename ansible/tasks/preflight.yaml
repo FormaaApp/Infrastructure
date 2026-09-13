@@ -1,0 +1,10 @@
+---
+- name: Verify supported operating system
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.os_family == "Debian"
+    fail_msg: >-
+      Unsupported operating system:
+      {{ ansible_facts.distribution }}
+      {{ ansible_facts.distribution_version }}.
+      This project supports Debian-based systems only.

@@ -1,11 +1,24 @@
 ---
+# bootstrap.yaml
 ssh_port: 41571
-
 packages:
   - git
-
 users:
   - name: qishon
     groups:
       - sudo
     ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdkphCtrS2dASXtibzKyJyUtb72mmZACKu8kLlByuOx qishon"
+
+# workspace.yaml
+service:
+  user: supabase
+  groups:
+    - docker
+
+runner_user: "{{ service.user }}"
+runner_org: true
+github_account: FormaaApp
+runner_labels:
+  - self-hosted
+  - linux
+  - docker
