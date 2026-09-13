@@ -1,0 +1,45 @@
+---
+- name: Deploy SSH hardening configuration
+  ansible.builtin.template:
+    src: sshd_config_hardening.conf.j2
+    dest: /etc/ssh/sshd_config.d/99-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "reload ssh"
+
+- name: Check whether ssh.socket exists
+  ansible.builtin.stat:
+    path: /lib/systemd/system/ssh.socket
+  register: ssh_socket_file
+
+- name: Check ssh.socket status
+  ansible.builtin.systemd:
+    name: ssh.socket
+  register: ssh_socket_service
+  failed_when: false
+  changed_when: false
+  when: ssh_socket_file.stat.exists
+
+- name: Create ssh.socket override directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/ssh.socket.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  when:
+    - ssh_socket_file.stat.exists
+    - ssh_socket_service.status.ActiveState == "active"
+
+- name: Configure ssh.socket port
+  ansible.builtin.template:
+    src: ssh_socket_override.conf.j2
+    dest: /etc/systemd/system/ssh.socket.d/override.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "restart ssh socket"
+  when:
+    - ssh_socket_file.stat.exists
+    - ssh_socket_service.status.ActiveState == "active"

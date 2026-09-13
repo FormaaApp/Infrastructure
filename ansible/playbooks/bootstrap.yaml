@@ -1,0 +1,33 @@
+---
+- name: Initial server setup
+  hosts: servers
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Verify supported operating system
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.os_family == "Debian"
+        fail_msg: >-
+          Unsupported operating system:
+          {{ ansible_facts.distribution }}
+          {{ ansible_facts.distribution_version }}.
+          This playbook supports Debian-based systems only.
+
+  handlers:
+    - name: Import handlers
+      ansible.builtin.import_tasks: ../handlers/main.yaml
+
+  tasks:
+    - name: Configure packages
+      ansible.builtin.import_tasks: ../tasks/packages.yaml
+
+    - name: Configure users
+      ansible.builtin.import_tasks: ../tasks/users.yaml
+
+    - name: Configure SSH
+      ansible.builtin.import_tasks: ../tasks/ssh.yaml
+
+    - name: Configure firewall
+      ansible.builtin.import_tasks: ../tasks/firewall.yaml

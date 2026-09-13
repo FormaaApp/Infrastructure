@@ -1,0 +1,8 @@
+---
+ssh_port: 2222
+
+users:
+  - name: alice
+    groups:
+      - sudo
+    pubkey: "ssh-ed25519 AAAA... alice@example.com"

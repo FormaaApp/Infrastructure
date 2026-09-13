@@ -1,0 +1,27 @@
+Port {{ ssh_port }}
+
+PermitRootLogin no
+LoginGraceTime 30
+MaxAuthTries 3
+MaxSessions 2
+
+PubkeyAuthentication yes
+
+PasswordAuthentication no
+PermitEmptyPasswords no
+
+KbdInteractiveAuthentication no
+UsePAM no
+
+AllowAgentForwarding no
+AllowTcpForwarding no
+GatewayPorts no
+X11Forwarding no
+
+PrintMotd no
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+PermitTunnel no
+
+AllowUsers {{ users | map(attribute='name') | join(' ') }}

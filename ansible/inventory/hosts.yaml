@@ -1,0 +1,7 @@
+all:
+  children:
+    servers:
+      hosts:
+        forma:
+          ansible_host: 85.159.231.29
+          ansible_user: root

@@ -1,0 +1,23 @@
+---
+- name: Validate sshd configuration
+  ansible.builtin.command:
+    cmd: sshd -t
+  changed_when: false
+  listen: "reload ssh"
+
+- name: Reload ssh service
+  ansible.builtin.systemd:
+    name: ssh
+    state: reloaded
+  listen: "reload ssh"
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  listen: "restart ssh socket"
+
+- name: Restart ssh socket
+  ansible.builtin.systemd:
+    name: ssh.socket
+    state: restarted
+  listen: "restart ssh socket"
