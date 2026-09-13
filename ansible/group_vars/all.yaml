@@ -2,7 +2,8 @@
 ssh_port: 2222
 
 users:
-  - name: alice
+  - name: qishon
     groups:
       - sudo
-    pubkey: "ssh-ed25519 AAAA... alice@example.com"
+      - docker
+    ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdkphCtrS2dASXtibzKyJyUtb72mmZACKu8kLlByuOx qishon"

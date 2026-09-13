@@ -12,7 +12,7 @@
 - name: Add SSH public keys
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
-    key: "{{ item.pubkey }}"
+    key: "{{ item.ssh_pubkey }}"
     state: present
     manage_dir: true
   loop: "{{ users }}"
