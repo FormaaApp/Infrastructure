@@ -30,6 +30,11 @@ ssh-add <pathToPrivateKey>
 
 ### 1. Первоначальная настройка
 
+**Что делает?**
+- Устанавливает пакеты и докер роль
+- Настраивает ssh
+- Создаёт юзеров
+
 1. Проверить работоспособность плейбука
 
 ```sh
@@ -44,6 +49,12 @@ ansible-playbook playbooks/bootstrap.yaml --diff --ask-pass
 ```
 
 ### 2. Настройка рабочего окружения
+
+**Что делает?**
+- Создаёт сервисный аккаунт, из-под которого будет работать весь бек
+- Устанавливает github runner роль
+
+1. Применить плейбук
 
 ```sh
 export PERSONAL_ACCESS_TOKEN=<Classic GitHub PAT with 'admin:org' permissions>
