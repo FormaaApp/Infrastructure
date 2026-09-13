@@ -25,6 +25,9 @@
         create_home: true
         state: present
 
-    - name: Install GitHub Actions Runner
-      ansible.builtin.include_role:
-        name: monolithprojects.github_actions_runner
+    - name: Setup SOPS age keys
+      ansible.builtin.import_tasks: ../tasks/sops.yaml
+
+    # - name: Install GitHub Actions Runner
+    #   ansible.builtin.include_role:
+    #     name: monolithprojects.github_actions_runner

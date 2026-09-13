@@ -57,6 +57,7 @@ ansible-playbook playbooks/bootstrap.yaml --diff --ask-pass
 **Что делает?**
 - Создаёт сервисный аккаунт, из-под которого будет работать весь бек
 - Устанавливает github runner роль
+- Генерирует sops-age ключ
 
 1. Применить плейбук
 
@@ -64,3 +65,5 @@ ansible-playbook playbooks/bootstrap.yaml --diff --ask-pass
 export PERSONAL_ACCESS_TOKEN=<Classic GitHub PAT with 'admin:org' permissions>
 ansible-playbook playbooks/workspace.yaml --diff --ask-pass
 ```
+
+2. Скопировать public sops-age ключ и вставить в `.sops.yaml` в репозиториях

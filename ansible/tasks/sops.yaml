@@ -1,0 +1,39 @@
+- name: Create SOPS age directory
+  ansible.builtin.file:
+    path: "/home/{{ service.user }}/.config/sops/age"
+    state: directory
+    owner: "{{ service.user }}"
+    group: "{{ service.user }}"
+    mode: "0700"
+
+- name: Check SOPS age key
+  ansible.builtin.stat:
+    path: "/home/{{ service.user }}/.config/sops/age/keys.txt"
+  register: sops_age_key
+
+- name: Generate SOPS age key
+  ansible.builtin.command:
+    cmd: "age-keygen -o /home/{{ service.user }}/.config/sops/age/keys.txt"
+  when: not sops_age_key.stat.exists
+
+- name: Set SOPS age key permissions
+  ansible.builtin.file:
+    path: "/home/{{ service.user }}/.config/sops/age/keys.txt"
+    owner: "{{ service.user }}"
+    group: "{{ service.user }}"
+    mode: "0600"
+
+- name: Extract SOPS age public key
+  ansible.builtin.command:
+    cmd: "age-keygen -y /home/{{ service.user }}/.config/sops/age/keys.txt"
+  register: sops_age_public_key
+  changed_when: false
+
+- name: Show SOPS age public key
+  ansible.builtin.debug:
+    msg:
+      - "=========================================="
+      - "SOPS AGE PUBLIC KEY"
+      - "=========================================="
+      - "{{ sops_age_public_key.stdout }}"
+      - "=========================================="
