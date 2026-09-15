@@ -28,6 +28,15 @@
     - name: Setup SOPS age keys
       ansible.builtin.import_tasks: ../tasks/sops.yaml
 
-    # - name: Install GitHub Actions Runner
-    #   ansible.builtin.include_role:
-    #     name: monolithprojects.github_actions_runner
+    - name: Install Self-Supabase
+      become: true
+      become_user: "{{ service.user }}"
+      ansible.builtin.import_tasks: ../tasks/self-supabase.yaml
+
+    - name: Check GitHub Actions Runner service
+      ansible.builtin.service_facts:
+
+    - name: Install GitHub Actions Runner
+      ansible.builtin.include_role:
+        name: monolithprojects.github_actions_runner
+      when: "'actions.runner' not in ansible_facts.services"

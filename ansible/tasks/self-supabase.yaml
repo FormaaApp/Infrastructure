@@ -1,0 +1,67 @@
+---
+- name: Check existing Supabase version
+  ansible.builtin.slurp:
+    src: "{{ supabase_install_dir }}/.supabase-version"
+  register: supabase_existing_version
+  failed_when: false
+  changed_when: false
+
+- name: Determine whether Supabase needs installation/update
+  ansible.builtin.set_fact:
+    supabase_needs_install: >-
+      {{
+        not supabase_existing_version.content is defined
+        or
+        (supabase_existing_version.content | b64decode | trim)
+        != 'ref=' ~ supabase_version
+      }}
+
+- name: Create temporary directory for Supabase source
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: "-supabase"
+  register: supabase_tmp_dir
+  when: supabase_needs_install
+
+- name: Clone Supabase repository
+  ansible.builtin.git:
+    repo: "https://github.com/supabase/supabase.git"
+    dest: "{{ supabase_tmp_dir.path }}"
+    version: "{{ supabase_version }}"
+    depth: 1
+    single_branch: true
+  when: supabase_needs_install
+
+- name: Create Supabase project directory
+  ansible.builtin.file:
+    path: "{{ supabase_install_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Copy Supabase Docker configuration
+  ansible.builtin.copy:
+    src: "{{ supabase_tmp_dir.path }}/docker/"
+    dest: "{{ supabase_install_dir }}/"
+    remote_src: true
+    mode: preserve
+  when: supabase_needs_install
+
+- name: Record Supabase version
+  ansible.builtin.copy:
+    content: "ref={{ supabase_version }}\n"
+    dest: "{{ supabase_install_dir }}/.supabase-version"
+    mode: "0644"
+
+- name: Pull Supabase Docker images
+  ansible.builtin.command:
+    cmd: docker compose pull
+    chdir: "{{ supabase_install_dir }}"
+  when: supabase_needs_install
+
+- name: Remove temporary Supabase source
+  ansible.builtin.file:
+    path: "{{ supabase_tmp_dir.path }}"
+    state: absent
+  when:
+    - supabase_needs_install
+    - supabase_tmp_dir.path is defined
