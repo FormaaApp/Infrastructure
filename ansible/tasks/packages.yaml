@@ -20,6 +20,17 @@
     group: root
     mode: "0755"
 
+- name: Download Supabase CLI .deb
+  ansible.builtin.get_url:
+    url: "https://github.com/supabase/cli/releases/download/v{{ supabase_cli_version }}/supabase_{{ supabase_cli_version }}_linux_amd64.deb"
+    dest: "/tmp/supabase-cli.deb"
+    mode: "0644"
+
+- name: Install Supabase CLI
+  ansible.builtin.apt:
+    deb: "/tmp/supabase-cli.deb"
+    state: present
+
 - name: Install Docker
   ansible.builtin.include_role:
     name: geerlingguy.docker

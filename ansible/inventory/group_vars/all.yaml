@@ -5,6 +5,7 @@ packages:
   - git
   - age
 sops_version: 3.13.3
+supabase_cli_version: 2.117.0
 users:
   - name: qishon
     groups:
@@ -29,6 +30,9 @@ service:
   user: supabase
   groups:
     - docker
+
+supabase_version: "self-hosted/v0.8.1"
+supabase_install_dir: "/home/{{ service.user }}/forma-supabase-backend"
 
 runner_user: "{{ service.user }}"
 runner_org: true
