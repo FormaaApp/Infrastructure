@@ -6,6 +6,9 @@ roles:
   - name: monolithprojects.github_actions_runner
     version: 1.28.1
 
+  - name: geerlingguy.ntp
+    version: "4.0.1"
+
 collections:
   - name: ansible.posix
   - name: community.general

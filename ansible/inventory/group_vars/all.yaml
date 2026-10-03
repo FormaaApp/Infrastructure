@@ -25,6 +25,11 @@ ufw_rules:
     proto: tcp
     comment: "HTTPS"
 
+ntp_enabled: true
+ntp_timezone: Europe/Moscow
+ntp_manage_config: true
+ntp_area: ru
+
 # workspace.yaml
 service:
   user: supabase

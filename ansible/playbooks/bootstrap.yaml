@@ -24,3 +24,7 @@
 
     - name: Configure firewall
       ansible.builtin.import_tasks: ../tasks/firewall.yaml
+
+    - name: Configure NTP
+      ansible.builtin.include_role:
+        name: geerlingguy.ntp
